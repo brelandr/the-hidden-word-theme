@@ -1,9 +1,9 @@
 === The Hidden Word ===
 Contributors: landtechwebdesigns
 Requires at least: 6.4
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,11 @@ Warm, scripture-focused theme for thehiddenword.org. Highlights the 100% free Hi
 5. Customize the plugin download URL under Appearance → Customize
 
 == Changelog ==
+
+= 1.3.4 =
+* Detect integrated Hidden Word Bible Lessons 2.0+ (HWBL_INTEGRATED_PREMIUM) for VOTD / study / ask page seeding
+* Public GitHub repo for Playground and InstaWP installs
+* Tested up to WordPress 7.0
 
 = 1.3.3 =
 * Remove Premium purchase and InstaWP demo CTAs from hero, sections, footer, customizer, and nav
