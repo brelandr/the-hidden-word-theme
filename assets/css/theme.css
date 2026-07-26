@@ -867,6 +867,24 @@ body.thw-site--lesson-full .thw-main {
 	color: #1e5c32;
 }
 
+.thw-auth__resend {
+	margin: 0 0 1.25rem;
+	padding: 0.75rem 1rem;
+	border: 1px solid rgba(27, 58, 75, 0.16);
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.65);
+}
+
+.thw-auth__resend summary {
+	cursor: pointer;
+	font-weight: 600;
+	color: var(--thw-primary);
+}
+
+.thw-auth__resend .thw-auth__form {
+	margin-top: 0.85rem;
+}
+
 .thw-auth__form .thw-auth__field,
 .thw-auth #thw-loginform p {
 	margin: 0 0 1rem;

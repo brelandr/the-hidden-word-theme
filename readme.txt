@@ -3,7 +3,7 @@ Contributors: landtechwebdesigns
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.3.4
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ Marketing theme for The Hidden Word Bible discipleship plugin.
 
 == Description ==
 
-Warm, scripture-focused theme for thehiddenword.org. Highlights the 100% free Hidden Word Bible Lessons plugin—memorization, Bible reader, Verse of the Day, AI study tools, digests, and more in one plugin—plus lesson pages, catalog, and themed Log in / Register pages.
+Warm, scripture-focused theme for thehiddenword.org. Highlights the 100% free Hidden Word Bible Lessons plugin—memorization, Bible reader, Verse of the Day, AI study tools, digests, and more in one plugin—plus lesson pages, catalog, and themed Log in / Register pages with email confirmation.
 
 == Installation ==
 
@@ -22,6 +22,11 @@ Warm, scripture-focused theme for thehiddenword.org. Highlights the 100% free Hi
 5. Customize the plugin download URL under Appearance → Customize
 
 == Changelog ==
+
+= 1.4.0 =
+* Registration requires email confirmation before sign-in (works with Hidden Word Bible Lessons email verification)
+* Login page: confirmation notices and “Resend confirmation email”
+* Privacy policy documentation updates
 
 = 1.3.4 =
 * Detect integrated Hidden Word Bible Lessons 2.0+ (HWBL_INTEGRATED_PREMIUM) for VOTD / study / ask page seeding

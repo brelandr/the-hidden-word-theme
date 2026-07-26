@@ -23,6 +23,14 @@ Zip of `main`:
 
 `https://github.com/brelandr/the-hidden-word-theme/archive/refs/heads/main.zip`
 
+## Privacy Policy
+
+Canonical draft for the Site + Hidden Word companion app:
+
+[`privacy-policy.md`](privacy-policy.md)
+
+Paste into WordPress **Pages → Privacy Policy** at `https://thehiddenword.org/privacy-policy/` when updating. Keep that URL stable (the iOS/Android apps link to it).
+
 ## License
 
 GPL-2.0-or-later

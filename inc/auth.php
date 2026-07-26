@@ -16,6 +16,7 @@ function thw_theme_auth_init() {
 	add_shortcode( 'thw_login_form', 'thw_theme_render_login_form' );
 	add_shortcode( 'thw_register_form', 'thw_theme_render_register_form' );
 	add_action( 'init', 'thw_theme_handle_registration', 20 );
+	add_action( 'init', 'thw_theme_handle_resend_verification', 21 );
 	add_filter( 'login_redirect', 'thw_theme_login_redirect', 10, 3 );
 	add_filter( 'wp_nav_menu_objects', 'thw_theme_filter_auth_menu_items', 10, 2 );
 }
@@ -117,12 +118,45 @@ function thw_theme_handle_registration() {
 		exit;
 	}
 
+	// Require email confirmation before the account can sign in.
+	if ( class_exists( 'HWBL_Email_Verification' ) ) {
+		$result = HWBL_Email_Verification::start_for_user( (int) $user_id );
+		$code   = is_wp_error( $result ) ? 'check_email_mail' : 'check_email';
+		wp_safe_redirect( add_query_arg( 'thw_reg', $code, thw_theme_register_url() ) );
+		exit;
+	}
+
+	// Fallback if the plugin class is unavailable: keep previous auto-login behavior.
 	wp_set_current_user( $user_id );
 	wp_set_auth_cookie( $user_id, true );
 	do_action( 'wp_login', $user_login, get_userdata( $user_id ) );
 
 	$redirect = thw_theme_get_page_url( 'todays-lesson' );
 	wp_safe_redirect( $redirect ? $redirect : home_url( '/' ) );
+	exit;
+}
+
+/**
+ * Resend email confirmation from the login page.
+ *
+ * @return void
+ */
+function thw_theme_handle_resend_verification() {
+	if ( empty( $_POST['thw_theme_resend_verify'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		return;
+	}
+
+	if ( ! isset( $_POST['thw_theme_resend_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['thw_theme_resend_nonce'] ) ), 'thw_theme_resend_verify' ) ) {
+		wp_safe_redirect( add_query_arg( 'login', 'resend_invalid', thw_theme_login_url() ) );
+		exit;
+	}
+
+	$identity = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
+	if ( class_exists( 'HWBL_Email_Verification' ) ) {
+		HWBL_Email_Verification::resend( $identity );
+	}
+
+	wp_safe_redirect( add_query_arg( 'login', 'resent', thw_theme_login_url() ) );
 	exit;
 }
 
@@ -137,7 +171,11 @@ function thw_theme_registration_notice() {
 	}
 
 	$code = sanitize_key( wp_unslash( $_GET['thw_reg'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$map  = array(
+	$ok   = array(
+		'check_email'      => __( 'Check your email to confirm your address before signing in. The link expires in 48 hours.', 'the-hidden-word-theme' ),
+		'check_email_mail' => __( 'Your account was created, but the confirmation email could not be sent. Open the login page and use “Resend confirmation email”.', 'the-hidden-word-theme' ),
+	);
+	$err  = array(
 		'disabled' => __( 'Registration is currently closed on this site.', 'the-hidden-word-theme' ),
 		'missing'  => __( 'Please fill in username, email, and password.', 'the-hidden-word-theme' ),
 		'mismatch' => __( 'Passwords do not match.', 'the-hidden-word-theme' ),
@@ -147,11 +185,14 @@ function thw_theme_registration_notice() {
 		'error'    => __( 'Could not create your account. Please try again.', 'the-hidden-word-theme' ),
 	);
 
-	if ( ! isset( $map[ $code ] ) ) {
+	if ( isset( $ok[ $code ] ) ) {
+		return '<p class="thw-auth__notice thw-auth__notice--success" role="status">' . esc_html( $ok[ $code ] ) . '</p>';
+	}
+	if ( ! isset( $err[ $code ] ) ) {
 		return '';
 	}
 
-	return '<p class="thw-auth__notice thw-auth__notice--error" role="alert">' . esc_html( $map[ $code ] ) . '</p>';
+	return '<p class="thw-auth__notice thw-auth__notice--error" role="alert">' . esc_html( $err[ $code ] ) . '</p>';
 }
 
 /**
@@ -203,14 +244,7 @@ function thw_theme_render_login_form( $atts = array() ) {
 	ob_start();
 	?>
 	<div class="thw-auth thw-auth--login">
-		<?php
-		if ( ! empty( $_GET['loggedout'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			echo '<p class="thw-auth__notice thw-auth__notice--success">' . esc_html__( 'You have been logged out.', 'the-hidden-word-theme' ) . '</p>';
-		}
-		if ( ! empty( $_GET['login'] ) && 'failed' === sanitize_key( wp_unslash( $_GET['login'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			echo '<p class="thw-auth__notice thw-auth__notice--error" role="alert">' . esc_html__( 'Invalid username or password.', 'the-hidden-word-theme' ) . '</p>';
-		}
-		?>
+		<?php echo thw_theme_login_notice(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php
 		wp_login_form(
 			array(
@@ -225,6 +259,22 @@ function thw_theme_render_login_form( $atts = array() ) {
 			)
 		);
 		?>
+		<?php if ( class_exists( 'HWBL_Email_Verification' ) ) : ?>
+			<details class="thw-auth__resend">
+				<summary><?php esc_html_e( 'Resend confirmation email', 'the-hidden-word-theme' ); ?></summary>
+				<form class="thw-auth__form thw-auth__form--resend" method="post" action="<?php echo esc_url( thw_theme_login_url() ); ?>">
+					<?php wp_nonce_field( 'thw_theme_resend_verify', 'thw_theme_resend_nonce' ); ?>
+					<input type="hidden" name="thw_theme_resend_verify" value="1" />
+					<p class="thw-auth__field">
+						<label for="thw-resend-login"><?php esc_html_e( 'Username or email', 'the-hidden-word-theme' ); ?></label>
+						<input type="text" name="user_login" id="thw-resend-login" autocomplete="username" required />
+					</p>
+					<p class="thw-auth__submit">
+						<button type="submit" class="thw-btn thw-btn--outline"><?php esc_html_e( 'Send confirmation link', 'the-hidden-word-theme' ); ?></button>
+					</p>
+				</form>
+			</details>
+		<?php endif; ?>
 		<p class="thw-auth__links">
 			<a href="<?php echo esc_url( wp_lostpassword_url( thw_theme_login_url() ) ); ?>"><?php esc_html_e( 'Forgot password?', 'the-hidden-word-theme' ); ?></a>
 			<?php if ( get_option( 'users_can_register' ) ) : ?>
@@ -235,6 +285,43 @@ function thw_theme_render_login_form( $atts = array() ) {
 	</div>
 	<?php
 	return (string) ob_get_clean();
+}
+
+/**
+ * Login page status / error notices.
+ *
+ * @return string
+ */
+function thw_theme_login_notice() {
+	if ( ! empty( $_GET['loggedout'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return '<p class="thw-auth__notice thw-auth__notice--success">' . esc_html__( 'You have been logged out.', 'the-hidden-word-theme' ) . '</p>';
+	}
+
+	if ( empty( $_GET['login'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return '';
+	}
+
+	$code = sanitize_key( wp_unslash( $_GET['login'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$ok   = array(
+		'verified' => __( 'Email confirmed. You can sign in now.', 'the-hidden-word-theme' ),
+		'resent'   => __( 'If that account needs confirmation, we sent a new link. Check your inbox (and spam folder).', 'the-hidden-word-theme' ),
+	);
+	$err  = array(
+		'failed'         => __( 'Invalid username or password.', 'the-hidden-word-theme' ),
+		'unverified'     => __( 'Please confirm your email before signing in. Use “Resend confirmation email” below if you need a new link.', 'the-hidden-word-theme' ),
+		'verify_expired' => __( 'That confirmation link expired. Request a new one below.', 'the-hidden-word-theme' ),
+		'verify_invalid' => __( 'That confirmation link is invalid. Request a new one below.', 'the-hidden-word-theme' ),
+		'resend_invalid' => __( 'Security check failed. Please try again.', 'the-hidden-word-theme' ),
+	);
+
+	if ( isset( $ok[ $code ] ) ) {
+		return '<p class="thw-auth__notice thw-auth__notice--success" role="status">' . esc_html( $ok[ $code ] ) . '</p>';
+	}
+	if ( isset( $err[ $code ] ) ) {
+		return '<p class="thw-auth__notice thw-auth__notice--error" role="alert">' . esc_html( $err[ $code ] ) . '</p>';
+	}
+
+	return '';
 }
 
 /**
@@ -349,7 +436,6 @@ function thw_theme_filter_auth_menu_items( $items, $args ) {
  * @return void
  */
 function thw_theme_login_failed( $username = null ) {
-	unset( $username );
 	$referrer = wp_get_referer();
 	if ( ! $referrer ) {
 		return;
@@ -360,7 +446,18 @@ function thw_theme_login_failed( $username = null ) {
 		return;
 	}
 
-	wp_safe_redirect( add_query_arg( 'login', 'failed', $login_url ) );
+	$code = 'failed';
+	if ( $username && class_exists( 'HWBL_Email_Verification' ) ) {
+		$user = get_user_by( 'login', $username );
+		if ( ! $user && is_email( $username ) ) {
+			$user = get_user_by( 'email', $username );
+		}
+		if ( $user instanceof WP_User && HWBL_Email_Verification::is_pending( (int) $user->ID ) ) {
+			$code = 'unverified';
+		}
+	}
+
+	wp_safe_redirect( add_query_arg( 'login', $code, $login_url ) );
 	exit;
 }
 add_action( 'wp_login_failed', 'thw_theme_login_failed' );
