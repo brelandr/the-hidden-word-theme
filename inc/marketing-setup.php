@@ -16,7 +16,7 @@ class THW_Theme_Marketing_Setup {
 
 	const OPTION_PAGE_IDS = 'thw_theme_page_ids';
 
-	const SETUP_VERSION = '1.7.0';
+	const SETUP_VERSION = '1.8.0';
 
 	const FLUSH_OPTION = 'thw_theme_flush_rewrite_rules';
 
@@ -317,7 +317,7 @@ class THW_Theme_Marketing_Setup {
 
 			// Discipleship & outreach pages (plans / prayer / journal / apologetics / share).
 			if ( shortcode_exists( 'hwbl_plan_list' ) ) {
-				$plans_intro  = '<p>' . esc_html__( 'Multi-day reading plans for anxiety, prayer, identity, forgiveness, purpose, discipleship, grief, marriage, new believers, foundations, Advent, Lent, kids Bible stories, the gospel, and more. Start a plan while signed in to track daily progress.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$plans_intro  = '<p>' . esc_html__( 'Multi-day reading plans for anxiety, prayer, identity, life’s hard places (health, marriage strain, addiction, finances, loneliness, depression, and more), grief, new believers, foundations, Advent, Lent, kids Bible stories, the gospel, and discipleship. Start a plan while signed in to track daily progress.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
 				$plans_intro .= '<p>' . esc_html__( 'Prefer larger type and spacing? Use Easy read on any lesson or Bible reader page (or open Reading Comfort below).', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
 				$page_ids['reading-plans'] = self::upsert_page(
 					__( 'Reading Plans', 'the-hidden-word-theme' ),
@@ -343,6 +343,24 @@ class THW_Theme_Marketing_Setup {
 					__( 'Life Season Plans', 'the-hidden-word-theme' ),
 					'life-season-plans',
 					$life_intro,
+					'page-templates/full-width-lesson.php'
+				);
+
+				$hard_intro  = '<p>' . esc_html__( 'Scripture for life’s hard places—overwhelm, health, addiction, finances, violence, doubt, loneliness, and depression. These plans are pastoral study, not crisis counseling. If you are in danger, call local emergency services; in the US and Canada call or text 988.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'When life feels overwhelming', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="life-problems"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Health', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="health"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Marriage under strain', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="marriage"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Alcohol', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="alcoholism"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Addiction', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="addiction"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Finances', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="finances"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Domestic violence', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="domestic-violence"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Doubt / thin faith', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="doubt"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Loneliness', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="loneliness"]' . "\n\n";
+				$hard_intro .= '<h2>' . esc_html__( 'Depression', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="depression"]' . "\n\n";
+				$page_ids['lifes-hard-places'] = self::upsert_page(
+					__( "Life's Hard Places", 'the-hidden-word-theme' ),
+					'lifes-hard-places',
+					$hard_intro,
 					'page-templates/full-width-lesson.php'
 				);
 
@@ -656,6 +674,7 @@ class THW_Theme_Marketing_Setup {
 			'reading-plans'       => __( 'Reading Plans', 'the-hidden-word-theme' ),
 			'faith-formation'     => __( 'Faith Formation', 'the-hidden-word-theme' ),
 			'life-season-plans'   => __( 'Life Season Plans', 'the-hidden-word-theme' ),
+			'lifes-hard-places'   => __( "Life's Hard Places", 'the-hidden-word-theme' ),
 			'kids-bible-stories'  => __( 'Kids Bible Stories', 'the-hidden-word-theme' ),
 			'church-seasons'      => __( 'Church Seasons', 'the-hidden-word-theme' ),
 			'reading-comfort'     => __( 'Reading Comfort', 'the-hidden-word-theme' ),
