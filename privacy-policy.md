@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated: July 23, 2026**
+**Last Updated: August 20, 2026** (gospel / testimony / prayer section added)
 
 This Privacy Policy describes how **Breland Computer Services / Land Tech Web Designs, Corp**, doing business as **The Hidden Word** / **TheHiddenWord.org** (“we,” “us,” or “our”), collects, uses, and shares information when you use:
 
@@ -37,11 +37,11 @@ Depending on how you use the Services, we may collect:
 
 | Category | Examples |
 |----------|----------|
-| **Name** | Display name or first/last name associated with your account |
-| **Email address** | Account email used for WordPress registration, login, or support |
-| **User ID** | Username, WordPress user ID, or similar account identifiers |
-| **Other user content** | Bible study questions and AI-assisted answers (“Ask”), memorization deck and progress, practice streaks/badges, safety/abuse reports, translation or tradition preferences, and similar content you create or save |
-| **Account & security** | Passwords on the website (handled by WordPress); **Application Passwords** issued for the App (see below) |
+| **Name** | Display name or first/last name associated with your account; name Apple shares if you use Sign in with Apple (usually only the first time you authorize the App) |
+| **Email address** | Account email used for WordPress registration, login, or support; email Apple shares if you use Sign in with Apple, which may be your real address or an Apple **Hide My Email** private relay address (for example ending in `@privaterelay.appleid.com`) |
+| **User ID** | Username, WordPress user ID, or similar account identifiers; Apple’s opaque user identifier (“sub”) when you use Sign in with Apple |
+| **Other user content** | Bible study questions and AI-assisted answers (“Ask”), memorization deck and progress, practice streaks/badges, safety/abuse reports, translation or tradition preferences, gospel presentation responses (choice + optional email/location), testimonies, prayer requests, and similar content you create or save |
+| **Account & security** | Passwords on the website (handled by WordPress); **Application Passwords** issued for the App (see below); Sign in with Apple identity tokens used only to verify your Apple sign-in and create or link your account |
 | **Support communications** | Messages you send us by email or through support channels |
 
 We do **not** collect Social Security numbers, payment card numbers, or bank account numbers through the Services. The Services are not a marketplace for buying or selling between users.
@@ -72,13 +72,24 @@ We do **not**:
 
 ### 3.1 Sign-in and Application Passwords
 
-The recommended way to connect the App to a church site is **Sign in on website** (`/app/connect` on the church site):
+You can connect the App to a church site (including the hub) in these ways:
+
+**A. Sign in on website** (`/app/connect` on the church site):
 
 1. You sign in with your normal WordPress username and password **in the browser**.
 2. The church site creates a WordPress **Application Password** for the App and returns a one-time code to the App.
 3. The App stores the Application Password using the device’s secure storage (iOS Keychain / Android Keystore via SecureStore).
 
+**B. Sign in with Apple (iOS):**
+
+1. On a supported iOS build of the App, you may authenticate with Apple instead of typing a website password.
+2. Apple may provide us (or the church site you are signing into) with an Apple user identifier, and—when you choose to share them—your name and email address. If you use Apple’s **Hide My Email** option, we receive a private relay address and may use it to create or link your WordPress account and to communicate about your account.
+3. The church site verifies Apple’s identity token, creates or links a WordPress user, stores the Apple user identifier with that account, and issues the same kind of one-time **Application Password** claim the App uses for website connect.
+4. After that, the App stores the Application Password in secure device storage, the same as website connect.
+
 Your normal website password is **not** stored in the App. You may also paste an Application Password manually as an advanced option.
+
+Apple processes Sign in with Apple under [Apple’s Privacy Policy](https://www.apple.com/legal/privacy/). We do not receive your Apple ID password.
 
 ### 3.2 Data the App sends and receives
 
@@ -100,13 +111,61 @@ The App may cache content locally (for example lessons, Bible chapters, Verse of
 
 ### 3.4 Account deletion and access revocation
 
-Consistent with App Store requirements, signed-in users can request deletion of their church WordPress account access from the App (**Preferences → Delete my account**). That process is designed to revoke Application Passwords associated with the App and mark the account for deletion handling on the church site. Residual copies may remain in backups for a limited period as described in Section 8.
+Consistent with App Store requirements, signed-in users can request deletion of their church WordPress account access from the App (**Preferences → Delete my account**). That process is designed to revoke Application Passwords associated with the App and mark the account for deletion handling on the church site. Residual copies may remain in backups for a limited period as described in Section 9.
 
 There is no separate “Hidden Word cloud account” apart from your WordPress account on the hub and/or your church site.
 
+### 3.5 Sign in with Apple (cross-reference)
+
+If you use **Sign in with Apple** in the App, see Sections 2.1 and 3.1 for what Apple may share (name, email including Hide My Email relay addresses, and Apple’s opaque user identifier). We do not receive your Apple ID password.
+
 ---
 
-## 4. How we use personal information
+## 4. Gospel responses, testimonies, and prayer requests
+
+### 4.1 Gospel presentation responses (may be anonymous visitors)
+
+Shared gospel presentation pages (for example `/gospel/{id}`) let visitors respond without creating an account.
+
+**What may be collected**
+
+- Your response choice (for example “I want to follow Jesus,” “I have questions,” or “I already follow Jesus”)
+- Optional **email** (if you choose to provide it for follow-up)
+- Optional **city or ZIP / postal code** (if you choose to provide it so we can suggest nearby churches)
+- Technical abuse-prevention data such as IP address (rate limiting)
+
+**Who receives it**
+
+- Site administrators on the WordPress site that hosts the presentation (via a **private** Gospel Responses record in wp-admin, and email to the site `admin_email`)
+- If your location matches a church in the network directory, the **matched church contact** (typically the church post author’s email) may also receive a copy so they can offer local follow-up
+
+**Purpose**
+
+Follow-up / pastoral connection and suggesting nearby churches. Submitting a response is **voluntary**. Email and location are optional; the form requires explicit consent before submit.
+
+**Retention**
+
+Responses are stored as **private** WordPress posts until an administrator deletes them. Residual copies may remain in backups for a limited period (see Section 9).
+
+**Deletion**
+
+Email [sales@landtechwebdesigns.com](mailto:sales@landtechwebdesigns.com) (or the hosting church administrator for church-hosted sites) to request deletion of a gospel response that includes your contact details.
+
+### 4.2 Testimonies
+
+Testimony content is **account-required**. You control whether a testimony is private or shared publicly via a share link. Public share pages are viewable by anyone with the link. Site administrators can see testimonies in wp-admin for moderation. Safety / abuse reports may be filed by users and reviewed by administrators (see Section 4.4).
+
+### 4.3 Prayer requests
+
+Prayer requests are **account-required**. Visibility depends on the feature surface (for example cohort / wall views with the attribution mode you choose). Site administrators can see prayer requests in wp-admin. Do not post crisis disclosures expecting automated emergency response; use local emergency services when needed. Safety reports follow the same path as other community content.
+
+### 4.4 Human review of safety reports and sensitive outreach
+
+Automated reporting and flagging exist for community safety. On the hub, administrators review **Gospel Responses**, safety reports, testimonies, and prayer requests in WordPress admin, and receive email notifications for new gospel responses. Expected practice: review new gospel responses and safety reports **promptly** (same business day when possible). This product transparency describes shipped behavior; it is not a substitute for legal counsel review (noted in our post-launch strategy checklist).
+
+---
+
+## 5. How we use personal information
 
 We use personal information to:
 
@@ -123,7 +182,7 @@ AI-assisted features (“Ask”) process the questions you submit in order to ge
 
 ---
 
-## 5. How we share information
+## 6. How we share information
 
 We may share personal information only as follows:
 
@@ -137,7 +196,7 @@ We do **not** sell personal information and do not share personal information wi
 
 ---
 
-## 6. Cookies and similar technologies (Site)
+## 7. Cookies and similar technologies (Site)
 
 A cookie is a small piece of data stored on your device. We use cookies and similar technologies on the Site for:
 
@@ -152,7 +211,7 @@ We do not use advertising cookies such as Google AdSense / DoubleClick for the S
 
 ---
 
-## 7. Children’s privacy
+## 8. Children’s privacy
 
 The Services are not directed to children under **13**, and we do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided personal information to us, contact us at [sales@landtechwebdesigns.com](mailto:sales@landtechwebdesigns.com) and we will take steps to delete it.
 
@@ -160,7 +219,7 @@ Parents and guardians are responsible for supervising minors’ use of church ac
 
 ---
 
-## 8. Retention, security, and deletion
+## 9. Retention, security, and deletion
 
 We retain personal information only as long as needed to provide the Services, comply with legal obligations, resolve disputes, and enforce our agreements. Backups may retain residual copies for a limited time after deletion.
 
@@ -174,7 +233,7 @@ We use commercially reasonable administrative, technical, and physical safeguard
 
 ---
 
-## 9. Your privacy rights
+## 10. Your privacy rights
 
 Depending on where you live, you may have rights under applicable law, including:
 
@@ -193,25 +252,25 @@ We do not sell personal information. If you are a California resident and believ
 
 ---
 
-## 10. International users
+## 11. International users
 
 The Services may be hosted in the United States. If you access them from another country, you understand that your information may be processed in the United States, which may have different data protection rules than your country.
 
 ---
 
-## 11. Links to other sites
+## 12. Links to other sites
 
 The Site and App may link to third-party websites or church sites we do not operate. Their privacy practices are their own. We encourage you to read their policies.
 
 ---
 
-## 12. Changes to this Privacy Policy
+## 13. Changes to this Privacy Policy
 
 We may update this Privacy Policy from time to time. We will post the updated policy on the Site and change the “Last Updated” date. If changes materially affect how we use personal information you previously provided, we will take reasonable steps to notify you (for example by posting a notice on the Site).
 
 ---
 
-## 13. Contact us
+## 14. Contact us
 
 Questions about this Privacy Policy or our privacy practices:
 

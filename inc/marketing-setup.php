@@ -16,7 +16,7 @@ class THW_Theme_Marketing_Setup {
 
 	const OPTION_PAGE_IDS = 'thw_theme_page_ids';
 
-	const SETUP_VERSION = '1.3.4';
+	const SETUP_VERSION = '1.7.0';
 
 	const FLUSH_OPTION = 'thw_theme_flush_rewrite_rules';
 
@@ -314,6 +314,145 @@ class THW_Theme_Marketing_Setup {
 					'page-templates/full-width-lesson.php'
 				);
 			}
+
+			// Discipleship & outreach pages (plans / prayer / journal / apologetics / share).
+			if ( shortcode_exists( 'hwbl_plan_list' ) ) {
+				$plans_intro  = '<p>' . esc_html__( 'Multi-day reading plans for anxiety, prayer, identity, forgiveness, purpose, discipleship, grief, marriage, new believers, foundations, Advent, Lent, kids Bible stories, the gospel, and more. Start a plan while signed in to track daily progress.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$plans_intro .= '<p>' . esc_html__( 'Prefer larger type and spacing? Use Easy read on any lesson or Bible reader page (or open Reading Comfort below).', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$page_ids['reading-plans'] = self::upsert_page(
+					__( 'Reading Plans', 'the-hidden-word-theme' ),
+					'reading-plans',
+					$plans_intro . '[hwbl_plan_list]',
+					'page-templates/full-width-lesson.php'
+				);
+
+				$kids_intro  = '<p>' . esc_html__( 'Short Bible stories for kids (about ages 6–10). Turn on Kids mode from a lesson toolbar or Reading Comfort to highlight these plans site-wide.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$kids_intro .= '<p><button type="button" class="thw-btn thw-btn--secondary" data-hwbl-kids-mode-toggle="1" aria-pressed="false">' . esc_html__( 'Toggle Kids mode', 'the-hidden-word-theme' ) . '</button></p>' . "\n\n";
+				$page_ids['kids-bible-stories'] = self::upsert_page(
+					__( 'Kids Bible Stories', 'the-hidden-word-theme' ),
+					'kids-bible-stories',
+					$kids_intro . '[hwbl_plan_list topic="kids"]',
+					'page-templates/full-width-lesson.php'
+				);
+
+				$life_intro  = '<p>' . esc_html__( 'Plans for hard seasons and new beginnings—grief, marriage, and first steps as a believer.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$life_intro .= '<h2>' . esc_html__( 'Grief', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="grief"]' . "\n\n";
+				$life_intro .= '<h2>' . esc_html__( 'New believer', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="new-believer"]' . "\n\n";
+				$life_intro .= '<h2>' . esc_html__( 'Marriage', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="marriage"]' . "\n\n";
+				$page_ids['life-season-plans'] = self::upsert_page(
+					__( 'Life Season Plans', 'the-hidden-word-theme' ),
+					'life-season-plans',
+					$life_intro,
+					'page-templates/full-width-lesson.php'
+				);
+
+				$faith_intro  = '<p>' . esc_html__( 'Grow deeper in everyday faith—prayer, identity in Christ, forgiveness, calling at work, and following Jesus day by day.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$faith_intro .= '<h2>' . esc_html__( 'Prayer', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="prayer"]' . "\n\n";
+				$faith_intro .= '<h2>' . esc_html__( 'Identity', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="identity"]' . "\n\n";
+				$faith_intro .= '<h2>' . esc_html__( 'Forgiveness', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="forgiveness"]' . "\n\n";
+				$faith_intro .= '<h2>' . esc_html__( 'Purpose', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="purpose"]' . "\n\n";
+				$faith_intro .= '<h2>' . esc_html__( 'Discipleship', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="discipleship"]' . "\n\n";
+				$page_ids['faith-formation'] = self::upsert_page(
+					__( 'Faith Formation', 'the-hidden-word-theme' ),
+					'faith-formation',
+					$faith_intro,
+					'page-templates/full-width-lesson.php'
+				);
+			}
+
+			if ( shortcode_exists( 'hwbl_liturgical_season' ) ) {
+				$seasons_intro  = '<p>' . esc_html__( 'Follow the church year—Advent, Christmas, Lent, Holy Week, and Eastertide—with suggested reading plans when they are in season.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$seasons_intro .= '[hwbl_liturgical_season]' . "\n\n";
+				$seasons_intro .= '<h2>' . esc_html__( 'Advent', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="advent"]' . "\n\n";
+				$seasons_intro .= '<h2>' . esc_html__( 'Lent', 'the-hidden-word-theme' ) . '</h2>' . "\n\n" . '[hwbl_plan_list topic="lent"]' . "\n\n";
+				$page_ids['church-seasons'] = self::upsert_page(
+					__( 'Church Seasons', 'the-hidden-word-theme' ),
+					'church-seasons',
+					$seasons_intro,
+					'page-templates/full-width-lesson.php'
+				);
+			}
+
+			$comfort_intro  = '<p>' . esc_html__( 'Make Scripture easier to read. Easy read increases spacing and uses a clearer font. Kids mode enlarges type and highlights kids Bible story plans.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+			$comfort_intro .= '<p><button type="button" class="thw-btn thw-btn--primary" data-hwbl-easy-read-toggle="1" aria-pressed="false">' . esc_html__( 'Toggle Easy read', 'the-hidden-word-theme' ) . '</button> ';
+			$comfort_intro .= '<button type="button" class="thw-btn thw-btn--secondary" data-hwbl-kids-mode-toggle="1" aria-pressed="false">' . esc_html__( 'Toggle Kids mode', 'the-hidden-word-theme' ) . '</button></p>' . "\n\n";
+			$comfort_intro .= '<p>' . esc_html__( 'These preferences are saved in your browser (and to your account when signed in). They also appear on lesson and Bible reader toolbars.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+			if ( ! empty( $page_ids['kids-bible-stories'] ) ) {
+				$comfort_intro .= '<p><a class="thw-btn thw-btn--secondary" href="' . esc_url( get_permalink( (int) $page_ids['kids-bible-stories'] ) ) . '">' . esc_html__( 'Kids Bible Stories', 'the-hidden-word-theme' ) . '</a></p>' . "\n\n";
+			}
+			$page_ids['reading-comfort'] = self::upsert_page(
+				__( 'Reading Comfort', 'the-hidden-word-theme' ),
+				'reading-comfort',
+				$comfort_intro,
+				'page-templates/full-width-lesson.php'
+			);
+
+			$gospel_url = self::get_shareable_gospel_url();
+			$gospel_intro = '<p>' . esc_html__( 'Share a clear gospel presentation with anyone—no account required for the recipient. Copy the link below, share via WhatsApp or SMS, or print the QR code.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+			if ( $gospel_url ) {
+				$gospel_intro .= '<p><a class="thw-btn thw-btn--primary" href="' . esc_url( $gospel_url ) . '">' . esc_html__( 'Open the Romans Road presentation', 'the-hidden-word-theme' ) . '</a></p>' . "\n\n";
+				$gospel_intro .= '[hwbl_share_tools url="' . esc_attr( $gospel_url ) . '" title="' . esc_attr__( 'The gospel', 'the-hidden-word-theme' ) . '"]' . "\n\n";
+			}
+			$gospel_intro .= '<p>' . esc_html__( 'Site admins can mark any Reading Plan as shareable in the plan editor to publish additional outreach pages at /gospel/{id}/.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+			$page_ids['share-the-gospel'] = self::upsert_page(
+				__( 'Share the Gospel', 'the-hidden-word-theme' ),
+				'share-the-gospel',
+				$gospel_intro,
+				'page-templates/full-width-lesson.php'
+			);
+
+			if ( shortcode_exists( 'hwbl_network_impact' ) ) {
+				$impact_intro = '<p>' . esc_html__( 'Anonymized network totals — testimonies shared, gospel pages viewed, responses, and registered churches.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$page_ids['impact'] = self::upsert_page(
+					__( 'Network Impact', 'the-hidden-word-theme' ),
+					'impact',
+					$impact_intro . '[hwbl_network_impact]',
+					'page-templates/full-width-lesson.php'
+				);
+			}
+
+			if ( shortcode_exists( 'hwbl_prayer' ) ) {
+				$prayer_intro = '<p>' . esc_html__( 'Write personal prayer requests and see who is praying with you. Sign in to add or update requests. Cohort prayer walls also appear on small-group pages.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$page_ids['prayer'] = self::upsert_page(
+					__( 'Prayer', 'the-hidden-word-theme' ),
+					'prayer',
+					$prayer_intro . '[hwbl_prayer]',
+					'page-templates/full-width-lesson.php'
+				);
+			}
+
+			if ( shortcode_exists( 'hwbl_my_journal' ) ) {
+				$journal_intro = '<p>' . esc_html__( 'Your answers to lesson Discussion questions, saved as a spiritual-growth timeline. Sign in and open any lesson’s Discussion tab to write; review everything here.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$page_ids['my-journal'] = self::upsert_page(
+					__( 'My Journal', 'the-hidden-word-theme' ),
+					'my-journal',
+					$journal_intro . '[hwbl_my_journal]',
+					'page-templates/full-width-lesson.php'
+				);
+			}
+
+			if ( shortcode_exists( 'hwbl_apologetics' ) ) {
+				$apologetics_intro = '<p>' . esc_html__( 'Curated, reviewed answers to common faith questions. This library is distinct from live AI Ask—these entries are authored and reviewed for this site.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+				$page_ids['apologetics'] = self::upsert_page(
+					__( 'Apologetics', 'the-hidden-word-theme' ),
+					'apologetics',
+					$apologetics_intro . '[hwbl_apologetics]',
+					'page-templates/full-width-lesson.php'
+				);
+			}
+
+			$connect_url = class_exists( 'HWBL_App_Connect' )
+				? HWBL_App_Connect::connect_url()
+				: trailingslashit( home_url( '/app/connect' ) );
+			$testimony_intro  = '<p>' . esc_html__( 'Write your story in three parts—Before, Turning point, and After—then optionally share a public link. Use the Hidden Word companion app to create and share your testimony.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+			$testimony_intro .= '<p><a class="thw-btn thw-btn--primary" href="' . esc_url( $connect_url ) . '">' . esc_html__( 'Open companion connect', 'the-hidden-word-theme' ) . '</a></p>' . "\n\n";
+			$testimony_intro .= '<p>' . esc_html__( 'Public testimonies are available at /testimony/{id}/ when you choose to share.', 'the-hidden-word-theme' ) . '</p>' . "\n\n";
+			$page_ids['my-testimony'] = self::upsert_page(
+				__( 'My Testimony', 'the-hidden-word-theme' ),
+				'my-testimony',
+				$testimony_intro,
+				'page-templates/full-width-lesson.php'
+			);
 		}
 
 		self::seed_primary_menu( $page_ids );
@@ -360,6 +499,41 @@ class THW_Theme_Marketing_Setup {
 		}
 
 		return (int) $id;
+	}
+
+	/**
+	 * Public URL for the first shareable gospel plan, if any.
+	 *
+	 * @return string
+	 */
+	private static function get_shareable_gospel_url() {
+		if ( ! post_type_exists( 'hwbl_plan' ) ) {
+			return '';
+		}
+		$plans = get_posts(
+			array(
+				'post_type'      => 'hwbl_plan',
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					array(
+						'key'   => '_hwbl_plan_shareable',
+						'value' => '1',
+					),
+				),
+				'orderby'        => 'date',
+				'order'          => 'ASC',
+			)
+		);
+		if ( ! $plans ) {
+			return '';
+		}
+		$plan_id = (int) $plans[0];
+		if ( class_exists( 'HWBL_Gospel_Share' ) ) {
+			return HWBL_Gospel_Share::share_url( $plan_id );
+		}
+		return trailingslashit( home_url( '/gospel/' . $plan_id ) );
 	}
 
 	/**
@@ -476,6 +650,55 @@ class THW_Theme_Marketing_Setup {
 				),
 				$position++
 			);
+		}
+
+		$grow_children = array(
+			'reading-plans'       => __( 'Reading Plans', 'the-hidden-word-theme' ),
+			'faith-formation'     => __( 'Faith Formation', 'the-hidden-word-theme' ),
+			'life-season-plans'   => __( 'Life Season Plans', 'the-hidden-word-theme' ),
+			'kids-bible-stories'  => __( 'Kids Bible Stories', 'the-hidden-word-theme' ),
+			'church-seasons'      => __( 'Church Seasons', 'the-hidden-word-theme' ),
+			'reading-comfort'     => __( 'Reading Comfort', 'the-hidden-word-theme' ),
+			'share-the-gospel'    => __( 'Share the Gospel', 'the-hidden-word-theme' ),
+			'impact'              => __( 'Network Impact', 'the-hidden-word-theme' ),
+			'prayer'              => __( 'Prayer', 'the-hidden-word-theme' ),
+			'my-journal'          => __( 'My Journal', 'the-hidden-word-theme' ),
+			'apologetics'         => __( 'Apologetics', 'the-hidden-word-theme' ),
+			'my-testimony'        => __( 'My Testimony', 'the-hidden-word-theme' ),
+		);
+		$grow_first_url = home_url( '/' );
+		foreach ( $grow_children as $slug => $label ) {
+			if ( ! empty( $page_ids[ $slug ] ) ) {
+				$grow_first_url = get_permalink( (int) $page_ids[ $slug ] );
+				break;
+			}
+		}
+		$grow_parent_id = self::insert_nav_menu_item(
+			$menu_id,
+			array(
+				'title' => __( 'Grow', 'the-hidden-word-theme' ),
+				'url'   => $grow_first_url ? $grow_first_url : home_url( '/' ),
+				'type'  => 'custom',
+			),
+			$position++
+		);
+		if ( ! is_wp_error( $grow_parent_id ) && $grow_parent_id ) {
+			$parent_ids['grow'] = (int) $grow_parent_id;
+			foreach ( $grow_children as $slug => $label ) {
+				if ( empty( $page_ids[ $slug ] ) ) {
+					continue;
+				}
+				self::insert_nav_menu_item(
+					$menu_id,
+					array(
+						'title'   => $label,
+						'page_id' => (int) $page_ids[ $slug ],
+						'type'    => 'post_type',
+					),
+					$position++,
+					$parent_ids['grow']
+				);
+			}
 		}
 
 		$auth_pages = array(

@@ -27,6 +27,14 @@ WordPress.org Live Preview uses `assets/blueprints/blueprint.json` on the plugin
 | `/verse-of-the-day/` | `[hwbl_verse_of_the_day]` |
 | `/find-a-lesson/` | `[hwbl_study_finder]` |
 | `/ask-a-question/` | `[hwbl_ask_question]` |
+| `/reading-plans/` | `[hwbl_plan_list]` |
+| `/share-the-gospel/` | Link to shareable `/gospel/{id}/` |
+| `/prayer/` | `[hwbl_prayer]` |
+| `/my-journal/` | `[hwbl_my_journal]` |
+| `/apologetics/` | `[hwbl_apologetics]` |
+| `/my-testimony/` | Companion connect CTA |
 | `/login/` / `/register/` | Auth forms |
+
+Primary nav includes a **Grow** submenu for the discipleship pages above.
 
 After upgrading the theme, Marketing Setup re-runs when `SETUP_VERSION` bumps (or use **Appearance → Marketing Setup**).

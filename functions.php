@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'THW_THEME_VERSION', '1.3.3' );
+define( 'THW_THEME_VERSION', '1.4.2' );
 define( 'THW_THEME_DIR', get_template_directory() );
 define( 'THW_THEME_URI', get_template_directory_uri() );
 

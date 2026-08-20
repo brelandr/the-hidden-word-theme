@@ -995,6 +995,20 @@ body.thw-site--lesson-full .thw-main {
 		display: block;
 	}
 
+	/*
+	 * Sticky header + long Grow submenu can exceed the viewport.
+	 * Make the open header itself scrollable so lower items stay reachable.
+	 */
+	.thw-header:has(.thw-nav.is-open),
+	.thw-header.is-nav-open {
+		max-height: 100vh;
+		max-height: 100dvh;
+		overflow-x: hidden;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior: contain;
+	}
+
 	.thw-header__inner {
 		flex-wrap: wrap;
 	}
@@ -1004,6 +1018,7 @@ body.thw-site--lesson-full .thw-main {
 		align-items: stretch;
 		gap: 0;
 		width: 100%;
+		padding-bottom: 1rem;
 	}
 
 	.thw-nav__list > li {
